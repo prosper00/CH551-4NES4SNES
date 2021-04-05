@@ -2,7 +2,7 @@
 CC = sdcc
 OBJCOPY = objcopy
 PACK_HEX = packihx
-WCHISP = wchisptool
+WCHISP = ch552isptool
 
 # Adjust the XRAM location and size to leave space for the USB DMA buffers
 XRAM_SIZE = 0x00C0
@@ -67,37 +67,30 @@ bin: ihx
 	$(OBJCOPY) -I ihex -O binary $(TARGET).ihx $(TARGET).bin
 
 flash: $(TARGET).bin pre-flash
-	$(WCHISP) -f $(TARGET).bin -g
+	$(WCHISP) $(TARGET).bin
 
 build4play: 4play bin clean2
 
-build2snes: 2snes bin clean
+build2snes: 2snes bin clean2
 
-build4snes: 4snes bin clean
+build4snes: 4snes bin clean2
 
 .DEFAULT_GOAL := all
-all: build4snes build4play
+all: build2snes
 
-clean clean2:
+clean2:
 	rm -f \
-	$(notdir $(RELS:.rel=.asm)) \
-	$(notdir $(RELS:.rel=.lst)) \
-	$(notdir $(RELS:.rel=.mem)) \
-	$(notdir $(RELS:.rel=.rel)) \
-	$(notdir $(RELS:.rel=.rst)) \
-	$(notdir $(RELS:.rel=.sym)) \
-	$(notdir $(RELS:.rel=.adb)) \
-	$(notdir $(EXTRA_RELS:.rel=.asm)) \
-	$(notdir $(EXTRA_RELS:.rel=.lst)) \
-	$(notdir $(EXTRA_RELS:.rel=.mem)) \
-	$(notdir $(EXTRA_RELS:.rel=.rel)) \
-	$(notdir $(EXTRA_RELS:.rel=.rst)) \
-	$(notdir $(EXTRA_RELS:.rel=.sym)) \
-	$(notdir $(EXTRA_RELS:.rel=.adb)) \
+	*.asm \
+	*.lst \
+	*.rst \
+	*.sym \
+	*.rel \
 	*.lk \
 	*.map \
 	*.mem \
-	*.ihx \
 	*.hex
 
-clean2: clean
+clean: clean2
+	rm -f \
+	*.bin \
+	*.ihx
