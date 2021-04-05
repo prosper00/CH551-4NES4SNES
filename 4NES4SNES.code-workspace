@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../../usr/share/sdcc/include"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"ch554.h": "c"
+		}
+	}
+}
